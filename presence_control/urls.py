@@ -19,9 +19,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 # from django.conf.urls import url, include
 
+from core import views as core_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('admin/', admin.site.urls),
+    path('login', core_view.login_caller, name='login'),
     path(r'',  include('controll.urls')),
 ]
 
