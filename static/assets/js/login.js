@@ -13,7 +13,7 @@ $(document).ready(function() {
             type: "POST",
             complete: function(response) {
                 if(response.status == 200)
-                    window.location = "/index/"
+                    window.location = "/aulas/"
                 else
                     window.alert("Usuário ou senha incorretos!");
             }
