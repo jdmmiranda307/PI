@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 import face_recognition
 import cv2
-from core.models import Aluno, Aula
+from core.models import Aluno, Aula, AulaAluno
+from datetime import datetime
 
 class Command(BaseCommand):
     help = 'Recognize registered faces'
@@ -13,8 +14,12 @@ class Command(BaseCommand):
             aluno.is_presente = False
             aluno.save()
 
+    def add_arguments(self, parser):
+        parser.add_argument('aula_id', type=int, help='Indicates the ID of the aula')
+
     def handle(self, *args, **options):
-        alunos = Aluno.objects.all()
+        aula = Aula.objects.get(pk=options['aula_id'])
+        alunos = aula.alunos.all()
         video_capture = cv2.VideoCapture(0)
         known_face_encodings = []
 
@@ -31,8 +36,8 @@ class Command(BaseCommand):
         process_this_frame = True
 
         while True:
-            aula = Aula.objects.get(pk=1)
-            if aula.active :
+            aula = Aula.objects.get(pk=options['aula_id'])
+            if aula.chamada_finalizada == None :
                 ret, frame = video_capture.read()
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
                 rgb_small_frame = small_frame[:, :, ::-1]
@@ -42,7 +47,7 @@ class Command(BaseCommand):
                     face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
                     face_names = []
-                    self.setToAusente()
+                    # self.setToAusente()
                     for face_encoding in face_encodings:
                         matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                         name = "Unknown"
@@ -50,9 +55,14 @@ class Command(BaseCommand):
                         if True in matches:
                             first_match_index = matches.index(True)
                             name = known_face_names[first_match_index]
-                            aluno = Aluno.objects.filter(nome=name).first()
-                            aluno.is_presente = True
-                            aluno.save()
+                            aula_aluno = AulaAluno.objects.filter(aula_id=options['aula_id'],\
+                                                                aluno__nome=name,\
+                                                                presente=False)
+                            if aula_aluno:
+                                aula_aluno = aula_aluno[0]
+                                aula_aluno.presente = True
+                                aula_aluno.horario_presenca = datetime.now()
+                                aula_aluno.save()
 
 
 
