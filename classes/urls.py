@@ -1,10 +1,14 @@
-from django.urls import path
+from django.conf.urls import url
 
 from . import views
 
 urlpatterns = [
-    path('aulas', views.ListAulas.as_view()),
-    path('aulas/<int:pk>', views.RetrieveAulas.as_view()),
-    path('alunos', views.ListAlunos.as_view()),
-    path('relatorio', views.RetrieveRelatorio.as_view()),
+    url(r'^$', views.aula_index, name='aulas'),
+    url(r'^get-aulas$', views.get_aulas, name='get-aulas'),
+    url(r'^aula/(?P<id_aula>[\w]+)$', views.aula, name='aula'),
+    url('add', views.add_aluno),
+    url(r'^start/(?P<id_aula>[\w]+)$', views.start_aula, name='start-aula'),
+    url(r'^end/(?P<id_aula>[\w]+)$', views.end_aula, name='end-aula'),
+    url(r'^get-alunos/(?P<id_aula>[\w]+)$', views.alunos, name='get-alunos'),
+    url(r'^status-aula/(?P<id_aula>[\w]+)$', views.status_aula, name='status-aula'),
 ]

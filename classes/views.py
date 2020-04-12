@@ -1,53 +1,112 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
-from rest_framework.response import Response
-from core.models import Aluno, Aula, Momento
-from .serializers import AlunosSerializer, AulasSerializer
-
-class ListAlunos(ListCreateAPIView):
-	queryset = Aluno.objects.all()
-	serializer_class = AlunosSerializer
-
-
-class ListAulas(ListCreateAPIView):
-	queryset = Aula.objects.all()
-	serializer_class = AulasSerializer	
+import subprocess
+from .forms import AlunoForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core import serializers
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect
+from core.models import Aluno, Aula, AulaAluno
+from datetime import datetime
 
 
-class RetrieveAulas(RetrieveAPIView):
-	queryset = Aula.objects.all()
-	serializer_class = AulasSerializer
+@login_required
+def aula_index(request):
+    return render(request, 'list-classes.html')
 
 
-class RetrieveRelatorio(APIView):
-
-	def get(self, request):
-		aula_id = request.query_params.get('aula_id', None)
-		momentos = Momento.objects.filter(aula_id=aula_id).all()
-
-		alunos_momento = {}
-
-		for momento in momentos:
-			alunos_presentes = momento.alunos_presentes.all()
-			for aluno in alunos_presentes:
-				if alunos_momento.get(aluno.nome, None):
-					alunos_momento[aluno.nome] += 1
-				else:
-					alunos_momento[aluno.nome] = 1
-
-		alunos_list = [aluno for aluno in alunos_momento]
-
-		result = []
-		nr_total = len(momentos)
-		for aluno in alunos_list:
-			nr_parcial = alunos_momento[aluno]
-			porcentagem = round((nr_parcial / nr_total if nr_total > 0 else 0) * 100, 2)
-			result.append(dict(
-				aluno=aluno,
-				porcentagem=f'{porcentagem}%',
-				presente=porcentagem > 70
-			))
+@login_required
+def get_aulas(request):
+    professor = request.user.professor
+    disciplinas = professor.curso_disciplinas.all()
+    aulas = []
+    for disciplina in disciplinas:
+        aulas += disciplina.aulas.all()
+    return JsonResponse(aulas_dict(aulas))
 
 
-		return Response(data=result)
+def aulas_dict(aulas):
+    data = {}
+    data_list = []
+    for aula in aulas:
+        current_dict = {}
+        current_dict['id'] = aula.id
+        current_dict['descricao'] = aula.descricao
+        current_dict['curso'] = aula.curso_disciplina.curso.nome
+        current_dict['disciplina'] = aula.curso_disciplina.disciplina.nome
+        current_dict['data'] = str(aula.data.day) + '/' + str(aula.data.month) + '/' + str(aula.data.year) + ' - ' + str(aula.data.time())
+        current_dict['ativo'] = "Não" if aula.ativo else "Sim"
+        data_list.append(current_dict)
+    data['aulas'] = data_list
+    return data
+
+
+@login_required
+def aula(request, id_aula):
+    aula = Aula.objects.get(pk=id_aula)
+    return render(request, 'aula.html', {'aula': aula})
+
+
+@login_required
+def alunos(request, id_aula):
+    aula = Aula.objects.get(pk=id_aula)
+    alunos = aula.alunos.all()
+    alunos = [aluno.id for aluno in alunos]
+    aula_alunos = AulaAluno.objects.filter(aula_id=id_aula, aluno_id__in=alunos)
+    return JsonResponse(alunos_dict(aula_alunos))
+
+
+def alunos_dict(aula_alunos):
+    data = {}
+    data_list = []
+    for aula_aluno in aula_alunos:
+        current_dict = {}
+        current_dict['foto'] = aula_aluno.aluno.foto.url
+        current_dict['nome'] = aula_aluno.aluno.nome
+        current_dict['status'] = 'presente' if aula_aluno.presente else 'ausente'
+        data_list.append(current_dict)
+    data['alunos'] = data_list
+    return data
+
+
+def add_aluno(request):
+    if request.method == 'POST':
+        form = AlunoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = AlunoForm()
+
+    return render(request, 'add.html', {'form': form})
+
+
+def start_aula(request, id_aula):
+    aula = Aula.objects.get(id=id_aula)
+    aula.chamada_iniciada = datetime.now()
+    aula.save()
+    p = subprocess.Popen("python manage.py recognize " + id_aula, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return redirect('/aulas/aula/'+id_aula)
+
+
+def end_aula(request, id_aula):
+    aula = Aula.objects.get(pk=id_aula)
+    aula.chamada_finalizada = datetime.now()
+    aula.ativo = False
+    aula.save()
+    return redirect('/aulas/')
+
+
+def get_alunos(request):
+    alunos = Aluno.objects.all()
+    json = serializers.serialize('json', alunos)
+    return HttpResponse(json, content_type='application/json')
+
+
+def status_aula(request, id_aula):
+    aula = Aula.objects.get(id=id_aula)
+    response_dict = {'button':''}
+    if aula.chamada_iniciada and aula.ativo:
+        response_dict['button'] = '<a href="/aulas/end/' + str(aula.id) + '" class="btn btn-danger btn-filter" data-target="cancelado">Finalizar Aula</a>'
+    elif not aula.chamada_finalizada:
+        response_dict['button'] = '<a href="/aulas/start/' + str(aula.id) + '" class="btn btn-success btn-filter" data-target="pagado">Iniciar Aula</a>'
+    return JsonResponse(response_dict)
