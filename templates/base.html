@@ -1,0 +1,46 @@
+{% load static %}
+<html lang="en">
+   <head>
+      <title>RFE</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% include "styles.html" %}
+    {% block styles %}
+    {% endblock styles %}
+   </head>
+   <body>
+      <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar" class="active">
+          <div class="custom-menu">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary main-color">
+              <i class="fa fa-bars"></i>
+              <span class="sr-only">Toggle Menu</span>
+            </button>
+          </div>
+          <div class="p-4 main-color">
+            <img rel="icon" type="image/png" src="{% static 'assets/img/white-logo.png' %}" class="side-menu-logo">
+            <ul class="list-unstyled components mb-5">
+              <li class="active">
+                <a href="/aulas/"><span class="fa fa-home mr-3"></span> Minhas Aulas</a>
+              </li>
+              <li>
+                <a href="#"><span class="fa fa-user mr-3"></span> Minhas Informações</a>
+              </li>
+              <li>
+                <a href="/logout"><span class="fa fa-sign-out mr-3"></span> Sair</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div id="content" class="p-4 p-md-5 pt-5">
+          {% block content %}
+          {% endblock %}
+        </div>
+         
+      </div>
+      <!-- <script src="{% static 'vendor/js/jquery.min.js' %}"></script> -->
+      {% include "scripts.html" %}
+        {% block scripts %}
+        {% endblock %}
+   </body>
+</html>
