@@ -5,63 +5,63 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 <div class="container">
-	<div class="row">
+    <div class="row">
 
-		<section class="content">
-			<div class="col-md-8 col-md-offset-2">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<div class="pull-left">
-							<div class="btn-group">
-								{% if aula.active %}
-									<a href="/end" class="btn btn-danger btn-filter" data-target="cancelado">Finalizar Aula</a>
-								{% else %}
-									<a href="/start" class="btn btn-success btn-filter" data-target="pagado">Iniciar Aula</a>
-								{% endif %}
-							</div>
-						</div>
-						<div class="pull-right">
-							<div class="btn-group">
-								<a href="/add" class="btn btn-default">Adicionar Aluno</a>
-							</div>
-						</div>			
-						<div class="table-container">
-							<table class="table table-filter">
-								<tbody>
-									{% for aluno in alunos %}
-										<tr data-status="pagado">
-											<td>
-												<div class="media">
-													<a class="pull-left">
-														<img src="/media/{{ aluno.foto }}" class="media-photo">
-													</a>
-													<div class="media-body">
-														<h4 class="title">
-															{{ aluno.nome }}
-															{% if aluno.is_presente %}
-																<span class="pull-right pagado">Presente</span>
-															{% else %}
-																<span class="pull-right cancelado">Ausente</span>
-															{% endif %}
-														</h4>
-													</div>
-												</div>
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		
-	</div>
+        <section class="content">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="pull-left">
+                            <div class="btn-group">
+                                {% if aula.chamada_iniciada %}
+                                    <a href="/aulas/end/{{ aula.id }}" class="btn btn-danger btn-filter" data-target="cancelado">Finalizar Aula</a>
+                                {% else %}
+                                    <a href="/aulas/start/{{ aula.id }}" class="btn btn-success btn-filter" data-target="pagado">Iniciar Aula</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <a href="/add" class="btn btn-default">Adicionar Aluno</a>
+                            </div>
+                        </div>          
+                        <div class="table-container">
+                            <table class="table table-filter">
+                                <tbody>
+                                    {% for aula_aluno in aula_alunos %}
+                                        <tr data-status="pagado">
+                                            <td>
+                                                <div class="media">
+                                                    <a class="pull-left">
+                                                        <img src="/media/{{ aula_aluno.aluno.foto }}" class="media-photo">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <h4 class="title">
+                                                            {{ aula_aluno.aluno.nome }}
+                                                            {% if aula_aluno.presente %}
+                                                                <span class="pull-right pagado">Presente</span>
+                                                            {% else %}
+                                                                <span class="pull-right cancelado">Ausente</span>
+                                                            {% endif %}
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
 </div>
 <script>
-	setInterval(function() {
-		// location.reload();
-		$(".table-container").load(location.href + " .table-container");
-	}, 1000)
+    setInterval(function() {
+        location.reload();
+        $(".table-container").load(location.href + " .table-container");
+    }, 9000000)
 </script>

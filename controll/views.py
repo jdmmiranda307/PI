@@ -29,7 +29,7 @@ def start_aula(request):
     aula = Aula.objects.get(pk=1)
     aula.active = True
     aula.save()
-    p = subprocess.Popen("python manage.py recognize", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen("python manage.py recognize " +aula.id, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return redirect('/')
 
 def end_aula(request):
