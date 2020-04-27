@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+   <link rel="stylesheet" href="{% static 'vendor/css/dataTables.bootstrap4.min.css' %}">
+   <link rel="stylesheet" href="{% static 'assets/css/aluno-form.css' %}">
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+{% endblock %}
+
+{% block content %}
+    <div id="data-div" data-id="{{ aluno.id }}" hidden ></div>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4" id="name">Alunos</h2>
+        </div>
+        <div class="col-md-4">
+            <button type="button" id="cancel" style="float: right;" class="btn btn-secondary hidden-elems" hidden>
+                <i class="fa fa-undo"></i> cancelar
+            </button>
+        </div>
+    </div>
+   <form id="aluno" style="width:100%">
+        <div class="row padding-row">
+            <div class="col-6">
+                <label> Nome</label>
+                <input disabled type="text" name="nome" id="inputNome" class="input-form form-control" placeholder="Nome">
+            </div>
+            <div class="col-6">
+                <label> Registro Academico</label>
+                <input disabled type="number" name="registro_academico" id="inputRA" class="input-form form-control" placeholder="RA">
+            </div>
+        </div>
+        <div class="row padding-row">
+            <div class="col-6">
+                <label> Data de Nascimento</label>
+                <input disabled type="date" name="data_nascimento" id="inputDataNascimento" class="input-form form-control" placeholder="Data Nascimento">
+            </div>
+            <div class="col-6">
+                <label for="exampleFormControlSelect1">Curso</label>
+                <select disabled name="curso_id" class="input-form form-control" id="cursosSelect">
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label> Disciplinas</label>
+                <select disabled size="5" name="disciplinas" class="input-form" style="height: 100%; width: 100%" id="disciplinasSelect" multiple>
+                </select>
+            </div>
+            <div class="col-6">
+                <label> Foto</label>
+                <br>
+                <input disabled type="image" id="foto" src="" width="256" height="192" style="cursor: default">
+                <input type="file" name="foto" id="inputFoto" class="input-form hidden-elems form-control" placeholder="Nomes" hidden>
+            </div>
+        </div>
+        <div class="row hidden-elems" style="padding-top: 15%" hidden>
+            <div class="col-md-6">
+                <button type="button" id="excluir" style="float: left;" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> excluir
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" style="float: right" id="save" class="btn btn-primary ">
+                  <i class="fa fa-save"></i> salvar
+                </button>
+            </div>
+        </div>
+   </form>
+        <button type="button" id="editContent" class="btn btn-primary float-btn ">
+          <i class="fa fa-pencil"></i>
+        </button>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'vendor/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/js/aluno.js' %}"></script>
+{% endblock %}
