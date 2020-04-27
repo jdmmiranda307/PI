@@ -24,10 +24,13 @@ from core import views as core_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login', core_view.login_caller, name='login'),
+    path('', core_view.login_caller, name='login'),
     path('logout', auth_views.logout, name='logout'),
     path('aulas/', include('classes.urls')),
-    path(r'',  include('controll.urls')),
+    path('alunos/', include('aluno.urls')),
+    path('cursos/', include('curso.urls')),
+    path('disciplinas/', include('disciplina.urls')),
+    # path(r'',  include('controll.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,7 +25,7 @@ SECRET_KEY = 'o9*_s$e@hjyorms1halht62_b6288c!!6p#h+h&68oryzsiwoi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'core',
     'controll',
     'classes',
+    'aluno',
+    'curso',
+    'disciplina',
 ]
 
 MIDDLEWARE = [
@@ -127,6 +130,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticroot/")
 MEDIA_ROOT = BASE_DIR + '/media/'
 MEDIA_URL = '/media/'
 
-LOGIN_URL = '/login'
+LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/aulas/'
-LOGOUT_REDIRECT_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
