@@ -24,20 +24,22 @@
                 <a href="/aulas/"><span class="mr-3"><i class="fa fa-home"></i></span> Minhas Aulas</a>
               </li>
               <li>
-                <a href="#"><span class="fa fa-eye mr-3"></span> Minhas Informações</a>
+                <a href="/professores/minhas-informacoes/{{ request.user.id }}"><span class="fa fa-eye mr-3"></span> Minhas Informações</a>
               </li>
-              <li>
-                <a href="/logout"><span class="fa fa-users mr-3"></span> Professores</a>
-              </li>
-              <li>
-                <a href="/alunos"><span class="fa fa-graduation-cap mr-3"></span> Alunos</a>
-              </li>
-              <li>
-                <a href="/logout"><span class="fa fa-certificate mr-3"></span> Cursos</a>
-              </li>
-              <li>
-                <a href="/logout"><span class="fa fa-book mr-3"></span> Disciplinas</a>
-              </li>
+              {% if request.user.is_superuser %}
+                <li>
+                  <a href="/professores"><span class="fa fa-users mr-3"></span> Professores</a>
+                </li>
+                <li>
+                  <a href="/alunos"><span class="fa fa-graduation-cap mr-3"></span> Alunos</a>
+                </li>
+                <li>
+                  <a href="/cursos"><span class="fa fa-certificate mr-3"></span> Cursos</a>
+                </li>
+                <li>
+                  <a href="/disciplinas"><span class="fa fa-book mr-3"></span> Disciplinas</a>
+                </li>
+              {% endif %}
               <li>
                 <a href="/logout"><span class="fa fa-sign-out mr-3"></span> Sair</a>
               </li>

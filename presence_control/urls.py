@@ -30,6 +30,7 @@ urlpatterns = [
     path('alunos/', include('aluno.urls')),
     path('cursos/', include('curso.urls')),
     path('disciplinas/', include('disciplina.urls')),
+    path('professores/', include('professor.urls')),
     # path(r'',  include('controll.urls')),
 ]
 
