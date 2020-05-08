@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+   <link rel="stylesheet" href="{% static 'vendor/css/dataTables.bootstrap4.min.css' %}">
+   <link rel="stylesheet" href="{% static 'assets/css/aluno-form.css' %}">
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+{% endblock %}
+
+{% block content %}
+    <div id="data-div" data-id="{{ aula.id }}" hidden ></div>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4" id="name">Aula</h2>
+        </div>
+        <div class="col-md-4">
+            <button type="button" id="cancel" style="float: right;" class="btn btn-secondary hidden-elems" hidden>
+                <i class="fa fa-undo"></i> cancelar
+            </button>
+        </div>
+    </div>
+   <form id="aluno" style="width:100%">
+        <div class="row padding-row">
+            <div class="col-6">
+                <label> Descricao</label>
+                <input disabled type="text" name="descricao" id="inputDescricao" class="input-form form-control" placeholder="descricao">
+            </div>
+            <div class="col-6">
+                <label> Data</label>
+                <input disabled type="datetime-local" name="data" id="inputData" class="input-form form-control" placeholder="Data">
+            </div>
+        </div>
+        <div class="row padding-row">
+            <div class="col-6">
+                <label for="exampleFormControlSelect1">Curso - Disciplina</label>
+                <select disabled name="curso_disciplina_id" class="input-form form-control" id="cursoDisciplinaSelect">
+                </select>
+            </div>
+        </div>
+        <div class="row hidden-elems" style="padding-top: 15%" hidden>
+            <div class="col-md-6">
+                <button type="button" id="excluir" style="float: left;" class="btn btn-danger">
+                    <i class="fa fa-trash"></i> excluir
+                </button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" style="float: right" id="save" class="btn btn-primary ">
+                  <i class="fa fa-save"></i> salvar
+                </button>
+            </div>
+        </div>
+   </form>
+        <button type="button" id="editContent" class="btn btn-primary float-btn ">
+          <i class="fa fa-pencil"></i>
+        </button>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'vendor/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/js/create-aula.js' %}"></script>
+{% endblock %}

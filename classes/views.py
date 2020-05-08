@@ -24,6 +24,26 @@ def get_aulas(request):
     return JsonResponse(aulas_dict(aulas))
 
 
+@login_required
+def create_aula(request):
+    if request.method == 'GET':
+        return render(request, 'create-aula.html')
+    if request.method == 'POST':
+        try:
+            data = dict(request.POST)
+            data = {key:value[0] for (key,value) in data.items()}
+            try:
+                aula = Aula()
+                for key in data.keys():
+                    setattr(aula, key, data[key])
+                aula.save()
+                return HttpResponse(status=200)
+            except:
+                return HttpResponse(status=400)
+        except:
+            return HttpResponse(status=500)
+
+
 def aulas_dict(aulas):
     data = {}
     data_list = []
