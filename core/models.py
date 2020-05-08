@@ -16,8 +16,20 @@ class Disciplina(models.Model):
 
 class Curso(models.Model):
    nome = models.CharField(max_length=50)
-   disciplinas = models.ManyToManyField(Disciplina, through='CursoDisciplina')
+   disciplinas = models.ManyToManyField(Disciplina, through='CursoDisciplina', blank=True, null=True)
    criado_em = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+   ativo = models.BooleanField(default=True)
+
+   def delete(self):
+      self.ativo = False
+      for disciplina in self.disciplinas.all():
+         cd = CursoDisciplina.objects.filter(curso_id=self.id, disciplina_id=disciplina.id, ativo=True)[0]
+         cd.ativo = False
+         cd.save()
+      self.save()
+
+   def get_queryset(self):
+      return super().get_queryset().filter(ativo=True)
 
    def __str__(self):
       return self.nome
@@ -26,6 +38,14 @@ class Curso(models.Model):
 class CursoDisciplina(models.Model):
    curso = models.ForeignKey(Curso, on_delete=models.DO_NOTHING)
    disciplina = models.ForeignKey(Disciplina, on_delete=models.DO_NOTHING)
+   ativo = models.BooleanField(default=True)
+
+   def delete(self):
+      self.ativo = False
+      self.save()
+
+   def get_queryset(self):
+      return super().get_queryset().filter(ativo=True)
 
    def __str__(self):
       return self.curso.nome + ' - ' + self.disciplina.nome
@@ -51,6 +71,14 @@ class Professor(models.Model):
    curso_disciplinas = models.ManyToManyField(CursoDisciplina, related_name='professores')
    criado_em = models.DateTimeField(blank=True, null=True, auto_now_add=True)
    user = models.OneToOneField(User, related_name='professor', on_delete=models.DO_NOTHING)
+   ativo = models.BooleanField(default=True)
+
+   def delete(self):
+      self.ativo = False
+      user = self.user
+      user.is_active = False
+      user.save()
+      self.save()
 
    def __str__(self):
       return self.nome_completo
