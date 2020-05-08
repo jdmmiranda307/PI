@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var table = $('#alunos').DataTable({
+    var table = $('#cursos').DataTable({
         "columnDefs": [
             {
                 "targets": [ 0 ],
@@ -8,20 +8,20 @@ $(document).ready(function() {
             }
         ],
         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"
+            "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json",
         }
     });
 
     $.ajax({
-        url: 'http://localhost:8000/alunos/get-alunos',
+        url: 'http://localhost:8000/cursos/get-cursos',
         cache: false,
         success: function(response) {
-            response.alunos.forEach(function (aluno){
-                table.row.add( [aluno.id, aluno.nome, aluno.registro_academico, aluno.curso] ).draw( false )
+            response.cursos.forEach(function (curso){
+                table.row.add( [curso.id, curso.nome] ).draw( false )
             })
-            $('#alunos').on('click', 'tbody tr', function() {
-                aluno_id = table.row( this ).data()[0];
-                window.location = "/alunos/" + aluno_id
+            $('#cursos').on('click', 'tbody tr', function() {
+                curso_id = table.row( this ).data()[0];
+                window.location = "/cursos/" + curso_id
             })
         },
         complete: function(response) {
@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
 
     $("#create").click(function () {
-        window.location = "/alunos/create-aluno"
+        window.location = "/cursos/create-curso"
     })
 
     function getCookie(c_name){

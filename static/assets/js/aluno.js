@@ -89,7 +89,7 @@ $(document).ready(function() {
                 if(response.status == 204 || response.status == 200)
                     window.location = "/alunos/"
                 else
-                    window.alert("Usuário ou senha incorretos!");
+                    window.alert("Erro ao salvar!");
             }
         });
     })

@@ -6,7 +6,10 @@ $(document).ready(function() {
                 "visible": false,
                 "searchable": false
             }
-        ]
+        ],
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"
+        }
     });
 
     $.ajax({
@@ -25,6 +28,10 @@ $(document).ready(function() {
             $('body').css('cursor', 'auto');
         }
     });
+
+    $("#create").click(function () {
+        window.location = "/aulas/create-aula"
+    })
 
     function getCookie(c_name){
         if (document.cookie.length > 0)

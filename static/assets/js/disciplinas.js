@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var table = $('#alunos').DataTable({
+    var table = $('#disciplinas').DataTable({
         "columnDefs": [
             {
                 "targets": [ 0 ],
@@ -13,24 +13,24 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: 'http://localhost:8000/alunos/get-alunos',
+        url: 'http://localhost:8000/disciplinas/get-disciplinas',
         cache: false,
         success: function(response) {
-            response.alunos.forEach(function (aluno){
-                table.row.add( [aluno.id, aluno.nome, aluno.registro_academico, aluno.curso] ).draw( false )
+            response.disciplinas.forEach(function (disciplina){
+                table.row.add( [disciplina.id, disciplina.nome] ).draw( false )
             })
-            $('#alunos').on('click', 'tbody tr', function() {
-                aluno_id = table.row( this ).data()[0];
-                window.location = "/alunos/" + aluno_id
+            $('#disciplinas').on('click', 'tbody tr', function() {
+                disciplina_id = table.row( this ).data()[0];
+                window.location = "/disciplinas/" + disciplina_id
             })
         },
         complete: function(response) {
-            $('body').css('cursor', 'auto');
+            $('body').css('disciplinar', 'auto');
         }
     });
 
     $("#create").click(function () {
-        window.location = "/alunos/create-aluno"
+        window.location = "/disciplinas/create-disciplina"
     })
 
     function getCookie(c_name){

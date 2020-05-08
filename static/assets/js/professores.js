@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var table = $('#alunos').DataTable({
+    var table = $('#professores').DataTable({
         "columnDefs": [
             {
                 "targets": [ 0 ],
@@ -13,15 +13,15 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: 'http://localhost:8000/alunos/get-alunos',
+        url: 'http://localhost:8000/professores/get-professores',
         cache: false,
         success: function(response) {
-            response.alunos.forEach(function (aluno){
-                table.row.add( [aluno.id, aluno.nome, aluno.registro_academico, aluno.curso] ).draw( false )
+            response.professores.forEach(function (professor){
+                table.row.add( [professor.id, professor.nome, professor.cursos, professor.email] ).draw( false )
             })
-            $('#alunos').on('click', 'tbody tr', function() {
-                aluno_id = table.row( this ).data()[0];
-                window.location = "/alunos/" + aluno_id
+            $('#professores').on('click', 'tbody tr', function() {
+                professor_id = table.row( this ).data()[0];
+                window.location = "/professores/" + professor_id
             })
         },
         complete: function(response) {
@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
 
     $("#create").click(function () {
-        window.location = "/alunos/create-aluno"
+        window.location = "/professores/create-professor"
     })
 
     function getCookie(c_name){

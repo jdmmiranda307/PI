@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    TABLE = $('#alunos').DataTable({
+        "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"
+        }
+    })
     getData()
 });
 
@@ -8,7 +13,6 @@ setInterval(function() {
 }, 1000)
 
 var getData = function (){
-    var table = $('#alunos').DataTable()
     link = 'http://localhost:8000/aulas/get-alunos/' + $('#aulaid').data('aulaid')
     $.ajax({
         url: link,
@@ -28,6 +32,7 @@ var getData = function (){
                             '<td><img src="'+ aluno.foto + '" style="width:75px"/></td>'+
                             '<td>'+ aluno.nome +'</td>' +
                             '<td>'+ aluno.status +'</td>'+
+                            '<td> <button>Alterar</button> <td>'+
                         '<tr>'
                     $('#table-body').append(rw)
                 })
@@ -44,7 +49,6 @@ var getData = function (){
 }
 
 var getButton = function (){
-    var table = $('#alunos').DataTable()
     link = 'http://localhost:8000/aulas/status-aula/' + $('#aulaid').data('aulaid')
     $.ajax({
         url: link,
