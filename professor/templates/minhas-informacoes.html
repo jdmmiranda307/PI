@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block styles %}
+   <link rel="stylesheet" href="{% static 'vendor/css/dataTables.bootstrap4.min.css' %}">
+   <link rel="stylesheet" href="{% static 'assets/css/aluno-form.css' %}">
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+{% endblock %}
+
+{% block content %}
+    <div id="data-div" data-id="{{ professor.id }}" hidden ></div>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4" id="name">{{ professor.nome_completo }}</h2>
+        </div>
+        <div class="col-md-4">
+            <button type="button" id="cancel" style="float: right;" class="btn btn-secondary hidden-elems" hidden>
+                <i class="fa fa-undo"></i> cancelar
+            </button>
+        </div>
+    </div>
+   <form id="aluno" style="width:100%">
+        <div class="row padding-row">
+            <div class="col-6">
+                <label> Nome</label>
+                <input disabled type="text" name="nome_completo" id="inputNome" class="input-form form-control" placeholder="Nome">
+            </div>
+            <div class="col-6">
+                <label> CPF</label>
+                <input disabled type="number" name="cpf" id="inputCPF" class="input-form form-control" placeholder="CPF">
+            </div>
+        </div>
+        <div class="row padding-row">
+            <div class="col-6">
+                <label> Data de Nascimento</label>
+                <input disabled type="date" name="data_nascimento" id="inputDataNascimento" class="input-form form-control" placeholder="Data Nascimento">
+            </div>
+            <div class="col-6">
+                <label for="exampleFormControlSelect1">Email</label>
+                <input disabled type="email" name="email" id="inputEmail" class="input-form form-control" placeholder="Email">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label> Nova Senha</label>
+                <input disabled type="password" name="password" id="inputSenha" class="input-form form-control" placeholder="Senha">
+            </div>
+            <div class="col-6">
+                <label> Confirmar Senha</label>
+                <input disabled type="password" id="inputConfirmarSenha" class="input-form form-control" placeholder="Confirmar Senha">
+            </div>
+        </div>
+        <div class="row hidden-elems" style="padding-top: 15%" hidden>
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <button type="button" style="float: right" id="save" class="btn btn-primary ">
+                  <i class="fa fa-save"></i> salvar
+                </button>
+            </div>
+        </div>
+   </form>
+        <button type="button" id="editContent" class="btn btn-primary float-btn ">
+          <i class="fa fa-pencil"></i>
+        </button>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'vendor/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'assets/js/minhas-informacoes.js' %}"></script>
+{% endblock %}
