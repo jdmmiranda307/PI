@@ -1,6 +1,12 @@
-var current_disciplinas = []
 $(document).ready(function() {
     aula_id = $("#data-div").data("id")
+    if(sessionStorage.getItem("is_superuser") == 'true'){
+        $("#professor-col").append(
+            "<label for='exampleFormControlSelect1'>Professor</label>" +
+            "<select disabled name='professor_responsavel_id' class='input-form form-control' id='ProfessorSelect'>"+
+            "</select>"
+        )
+    }
 
     $.ajax({
         url: 'http://localhost:8000/cursos/get-curso-disciplinas',
@@ -14,9 +20,14 @@ $(document).ready(function() {
         },
         complete: function(response) {
             $('body').css('cursor', 'auto');
+            getProfessores()
             getAula()
         }
     });
+
+    $('#cursoDisciplinaSelect').on('change', function(){
+        getProfessores()
+    })
 
     $("#editContent").click(function(){
         editableProps($(this))
@@ -55,13 +66,6 @@ $(document).ready(function() {
             else
                 formData.append(name, val)
         })
-        disciplinas_removidas = []
-        current_disciplinas.forEach(function(disciplina){
-            if(!data['disciplinas'].includes(String(disciplina))){
-                disciplinas_removidas.push(disciplina)
-            }
-        })
-        formData.append('disciplinas_removidas', disciplinas_removidas)
         $.ajax({
             headers: { "X-CSRFToken": getCookie("csrftoken") },
             url: 'http://localhost:8000/aulas/create-aula/',
@@ -116,15 +120,10 @@ var getAula = function (){
         cache: false,
         success: function(response) {
             response.aulas.forEach(function (aula){
-                $("#inputNome").val(aluno.nome)
-                $("#inputRA").val(aluno.registro_academico)
-                $("#inputDataNascimento").val(aluno.data_nascimento)
-                $("#cursosSelect").val(aluno.curso_id)
-                $("#foto").attr("src", aluno.foto);
-                current_disciplinas =  aluno.disciplinas_id
-                aluno.disciplinas_id.forEach(function (disciplina_id){
-                    $('#disciplinasSelect option[value=' + disciplina_id + ']').attr('selected', true);
-                })
+                $("#inputDescricao").val(aula.descricao)
+                $("#inputData").val(aula.data_field)
+                $("#cursoDisciplinaSelect").val(aula.curso_disciplina_id)
+                $("#ProfessorSelect").val(aula.professor_responsavel_id)
             })
         },
         complete: function(response) {
@@ -145,4 +144,21 @@ var cancelFunctEdit = function() {
     $("#foto").show()
     $(".hidden-elems").attr('hidden', true)
     $(".input-form").attr("disabled", true)
+}
+
+var getProfessores = function() {
+    $.ajax({
+        url: 'http://localhost:8000/professores/get-professor-disciplina/' + $('#cursoDisciplinaSelect').val(),
+        cache: false,
+        success: function(response) {
+            $("#ProfessorSelect").empty()
+            response.professores.forEach(function (professor){
+                option = "<option value="+ professor.id +">"+ professor.nome +"</option>"
+                $("#ProfessorSelect").append(option)
+            })
+        },
+        complete: function(response) {
+            $('body').css('cursor', 'auto');
+        }
+    });
 }
