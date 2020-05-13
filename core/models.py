@@ -92,6 +92,7 @@ class Aula(models.Model):
    curso_disciplina = models.ForeignKey(CursoDisciplina, related_name='aulas', on_delete=models.CASCADE)
    criado_em = models.DateTimeField(blank=True, null=True, auto_now_add=True)
    alunos = models.ManyToManyField(Aluno, through='AulaAluno')
+   professor_responsavel = models.ForeignKey(Professor, related_name='aulas', blank=True, null=True, on_delete=models.CASCADE)
    ativo = models.BooleanField(default=True)
 
    def __str__(self):
