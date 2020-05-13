@@ -20,7 +20,6 @@ $(document).ready(function() {
             }
             $(".input-form").each(function () {
                 name = $(this).prop("name")
-                // debugger
                 if(name=="is_superuser")
                     val = $(this).prop("checked")
                 else

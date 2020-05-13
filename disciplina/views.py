@@ -95,4 +95,3 @@ def delete_disciplina(request, id_disciplina):
         return HttpResponse(status=200)
     except Exception as e:
         return HttpResponse(status=400)
-
