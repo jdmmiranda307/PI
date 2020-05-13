@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^get-professor/(?P<id_professor>[\w]+)$', views.get_professor, name='get-professor'),
     url(r'^(?P<id_professor>[\w]+)$', views.professor, name='professor'),
     url(r'^delete-professor/(?P<id_professor>[\w]+)$', views.delete_professor, name='delete-professor'),
-    url(r'^minhas-informacoes/(?P<id_professor>[\w]+)$', views.minhas_informacoes, name='minhas-informacoes')
+    url(r'^minhas-informacoes/(?P<id_professor>[\w]+)$', views.minhas_informacoes, name='minhas-informacoes'),
+    url(r'^get-professor-disciplina/(?P<id_disciplina>[\w]+)$', views.get_professores_disciplina, name='get-professoresdisciplina')
 ]

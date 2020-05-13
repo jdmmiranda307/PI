@@ -146,6 +146,17 @@ def delete_professor(request, id_professor):
         return HttpResponse(status=400)
 
 
+@login_required
+def get_professores_disciplina(request, id_disciplina):
+    professores = list(CursoDisciplina.objects.get(id=id_disciplina).professores.all())
+    if request.user.professor in professores and\
+      professores.index(request.user.professor) != 0:
+        professores.pop(request.user.professor)
+        professores.insert(request.user.professor, 0)
+    return JsonResponse(professores_dict(professores))
+
+
+
 def professores_dict(professores):
     data = {}
     data_list = []
