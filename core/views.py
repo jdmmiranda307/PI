@@ -1,6 +1,6 @@
 import json
 from django.contrib.auth import login, authenticate
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -20,6 +20,6 @@ def login_caller(request):
                 response = 400
         except Exception as e:
             response = 500
-        return HttpResponse(status=response)
+        return JsonResponse(status=response, data={'is_superuser': user.is_superuser})
     else:
         return render(request, 'login.html')

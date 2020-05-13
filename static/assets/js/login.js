@@ -12,8 +12,10 @@ $(document).ready(function() {
             contentType: false,
             type: "POST",
             complete: function(response) {
-                if(response.status == 200)
+                if(response.status == 200){
+                    sessionStorage.setItem("is_superuser", response.responseJSON.is_superuser);
                     window.location = "/aulas/"
+                }
                 else
                     window.alert("Usuário ou senha incorretos!");
             }
