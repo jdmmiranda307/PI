@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
-from core.models import Curso, CursoDisciplina, Disciplina
+from core.models import Curso, CursoDisciplina, Disciplina, Professor
 from datetime import datetime
 
 
@@ -94,7 +94,10 @@ def cursos_dict(cursos):
 
 @login_required
 def get_curso_disciplinas(request):
-    curso_disciplinas = CursoDisciplina.objects.all().filter(ativo=True)
+    if request.user.is_superuser:
+        curso_disciplinas = CursoDisciplina.objects.all().filter(ativo=True)
+    else:
+        curso_disciplinas = request.user.professor.curso_disciplinas.all()
     return JsonResponse(curso_disciplinas_dict(curso_disciplinas))
 
 
@@ -130,3 +133,8 @@ def delete_curso(request, id_curso):
         return HttpResponse(status=200)
     except Exception as e:
         return HttpResponse(status=400)
+
+@login_required
+def get_disciplinas_professor(request, id_professor):
+    disciplinas = list(CursoDisciplina.objects.filter(professores__id=id_professor).filter(ativo=True))
+    return JsonResponse(curso_disciplinas_dict(disciplinas))

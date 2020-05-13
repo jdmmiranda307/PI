@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^create-curso$', views.create_curso, name='create-curso'),
     url(r'^get-curso/(?P<id_curso>[\w]+)$', views.get_curso, name='get-curso'),
     url(r'^(?P<id_curso>[\w]+)$', views.curso, name='curso'),
-    url(r'^delete-curso/(?P<id_curso>[\w]+)$', views.delete_curso, name='delete-curso')
+    url(r'^delete-curso/(?P<id_curso>[\w]+)$', views.delete_curso, name='delete-curso'),
+    url(r'^get-disciplina-professor/(?P<id_professor>[\w]+)$', views.get_disciplinas_professor, name='get-disciplinas-professor')
 ]
