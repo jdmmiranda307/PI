@@ -2,7 +2,8 @@ $(document).ready(function() {
     TABLE = $('#alunos').DataTable({
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json"
-        }
+        },
+        "bInfo" : false
     })
     getData()
     $("#edit").click(function () {
@@ -43,6 +44,7 @@ var getData = function (){
                 $('.dataTables_empty').remove()
                 response.alunos.forEach(function (aluno){
                     n += 1
+                    presente = aluno.status == 'presente' ? true : false
                     if(n % 2 == 0)
                         class_odd = 'even'
                     else
@@ -50,8 +52,13 @@ var getData = function (){
                     rw = '<tr role="row" class='+ class_odd +'>'+
                             '<td><img src="'+ aluno.foto + '" style="width:75px"/></td>'+
                             '<td>'+ aluno.nome +'</td>' +
-                            '<td>'+ aluno.status +'</td>'+
-                            '<td> <button '+ ( aulaAtivo ? '' : 'disabled' ) +' data-aulaaluno="'+ aluno.id +'" class="alterar">Alterar</button> <td>'+
+                            // '<td>'+ aluno.status +'</td>'+
+                            '<td>'+
+                                '<label class="switch">' +
+                                    '<input '+ ( aulaAtivo ? '' : 'disabled' ) +' class="alterar"  data-aulaaluno="'+ aluno.id +'" type="checkbox" '+ (presente ? 'checked' : '') +' >' +
+                                    '<span class="slider"></span>' + 
+                                '</label>'+
+                            '</td>' + 
                         '<tr>'
                     $('#table-body').append(rw)
                 })

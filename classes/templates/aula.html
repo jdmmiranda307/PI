@@ -3,6 +3,7 @@
 {% block styles %}
    <link rel="stylesheet" href="{% static 'vendor/css/dataTables.bootstrap4.min.css' %}">
    <link href="{% static 'assets/css/table.css' %}" rel="stylesheet" id="bootstrap-css">
+   <link href="{% static 'vendor/css/switch.css' %}" rel="stylesheet" id="bootstrap-css">
 {% endblock %}
 {% block content %}
 <h2 class="mb-4" id='aulaid' data-aulaid='{{ aula.id }}' data-aulaativo='{{ aula_finalizada }}'>Aula - {{ aula.descricao }}</h2>
@@ -12,8 +13,8 @@
          <tr>
              <th>Foto</th>
              <th>Nome</th>
-             <th>Status</th>
-             <th>Alterar Status</th>
+             <th>Presente</th>
+             <!-- <th>Alterar Status</th> -->
          </tr>
      </thead>
      <tbody id='table-body'>
@@ -22,8 +23,8 @@
          <tr>
              <th>Foto</th>
              <th>Nome</th>
-             <th>Status</th>
-             <th>Alterar Status</th>
+             <th>Presente</th>
+             <!-- <th>Alterar Status</th> -->
          </tr>
      </tfoot>
  </table>
