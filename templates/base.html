@@ -24,7 +24,7 @@
                 <a href="/aulas/"><span class="mr-3"><i class="fa fa-home"></i></span> Minhas Aulas</a>
               </li>
               <li>
-                <a href="/professores/minhas-informacoes/{{ request.user.id }}"><span class="fa fa-eye mr-3"></span> Minhas Informações</a>
+                <a href="/professores/minhas-informacoes/{{ request.user.professor.id }}"><span class="fa fa-eye mr-3"></span> Minhas Informações</a>
               </li>
               {% if request.user.is_superuser %}
                 <li>
